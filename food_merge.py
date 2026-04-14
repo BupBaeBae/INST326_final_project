@@ -51,7 +51,7 @@ def calculate_merge(usr_input, coins, usr_points):
 # Ngoc Nguyen
 
 # Siddhant Chintaluri
-def purchase_ingredient(ingredient_name, cost, balance, deck):
+def purchase_ingredient(ingredient_name, cost, balance, deck, level_id):
     """
     Users begin with a set amount of 500 coins, which will be spent on 
     ingredients to merge together. No more coins will be given throughout the 
@@ -91,6 +91,12 @@ def purchase_ingredient(ingredient_name, cost, balance, deck):
 
     if not isinstance(ingredient_name, str):
         raise ValueError("Invalid ingredient name")
+
+    if ingredient_name in RECIPES:
+        _, tier, _, _ = RECIPES[ingredient_name]
+        if tier > level_id:
+            print(f"You must reach level {tier} to purchase {ingredient_name}.")
+            return balance, deck
 
     # Check affordability
     if cost > balance:
