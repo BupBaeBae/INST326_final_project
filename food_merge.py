@@ -1,5 +1,6 @@
 import random
 
+# Ngoc Nguyen
 # Format: "ingredient": ("result", tier, point_value, purchase_cost)
 RECIPES = {
     "apple": ("juice", 1, 1, 10),
@@ -18,6 +19,36 @@ RECIPES = {
     "pie": ("dessert feast", 4, 10, 0),
     "sundae": ("dessert feast", 4, 10, 0)
 }
+
+def calculate_merge(usr_input, coins, usr_points):
+    """
+    Determines if a merge is valid and calculates updated points and coins.
+    Merging does not deduct coins.
+    
+    Args:
+        usr_input (str): The name of the ingredient the player wants to merge.
+        coins (int): The current amount of coins the player has.
+        usr_points (int): The current amount of points the player has.
+        
+    Returns:
+        updated_points (int): The player's updated points after a merge.
+        coins (int): The amount of coins left, remains unchanged during a merge.
+            and only changes after purchasing new ingredient.
+        result (str): The name of the higher-tier product created.
+    """
+    
+    if usr_input == "feast":
+        # Logic for the final goal (3-item merge)
+        return usr_points + 100, coins, "dessert feast"
+
+    if usr_input in RECIPES:
+        result, tier, pt_val, cost = RECIPES[usr_input]
+        updated_points = usr_points + pt_val
+        # Return coins unchanged to ensure merging is free
+        return updated_points, coins, result
+    
+    return usr_points, coins, None
+# Ngoc Nguyen
 
 # Siddhant Chintaluri
 def purchase_ingredient(ingredient_name, cost, balance, deck):
@@ -96,23 +127,6 @@ def purchase_ingredient(ingredient_name, cost, balance, deck):
 
     return balance, deck
 # Siddhant Chintaluri
-
-def calculate_merge(usr_input, coins, usr_points):
-    """
-    Determines if a merge is valid and calculates updated points.
-    Merging does not deduct coins.
-    """
-    if usr_input == "feast":
-        # Logic for the final goal (3-item merge)
-        return usr_points + 100, coins, "dessert feast"
-
-    if usr_input in RECIPES:
-        result, tier, pt_val, cost = RECIPES[usr_input]
-        updated_points = usr_points + pt_val
-        # Return coins unchanged to ensure merging is free
-        return updated_points, coins, result
-    
-    return usr_points, coins, None
 
 ## John Nguyen ##
 def update_deck(current_deck, ingredient_to_merge, new_product, is_feast=False):
