@@ -36,6 +36,52 @@ def calculate_merge(usr_input, coins, usr_points):
     
     return usr_points, coins, None
 
+## John Nguyen ##
+def update_deck(current_deck, ingredient_to_merge, new_product, is_feast=False):
+    """
+    Updates deck after successful merge event by removing used ingredients
+    and adding the newly merged product in their place
+    
+    Args:
+        current_deck (list of str):
+            Current deck before any changes
+        ingredient_to_merge (str):
+            Old ingredient used in a merge event
+            that will be removed from the deck.
+            Uses two of this ingredient for a merge.
+        new_product (str):
+            new ingredient added to the deck from a merge event
+        is_feast (bool):
+            checks if final goal was reached or not
+        
+    Returns:
+        current_deck (list of str): 
+            updated deck with new higher tier products 
+            added in place of the merged ingredients
+        
+    Side effects:
+        Modifies current_deck by removing used ingredients and appending the new
+        product. Deck size will decrease as two or more ingredients are replaced
+        by one merged item
+    """
+    # dessert_feasts needs these 3 items merged to be created
+    dessert_feast = ["cake", "pie", "sundae"]
+    
+    # remove items from the feast
+    if is_feast:
+        for item in dessert_feast:
+            current_deck.remove(item)
+    # remove items in a regular merge
+    else:
+        for i in range(2):
+            current_deck.remove(ingredient_to_merge)
+        
+    # add newly merged item to the deck
+    current_deck.append(new_product)
+    
+    return current_deck
+    ## John Nguyen ##
+    
 def main():
     user_deck = []
     user_coins = 500
