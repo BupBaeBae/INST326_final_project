@@ -19,6 +19,84 @@ RECIPES = {
     "sundae": ("dessert feast", 4, 10, 0)
 }
 
+# Siddhant Chintaluri
+def purchase_ingredient(ingredient_name, cost, balance, deck):
+    """
+    Users begin with a set amount of 500 coins, which will be spent on 
+    ingredients to merge together. No more coins will be given throughout the 
+    game, the goal being to achieve the final item with as few coins spent 
+    (as efficient as possible)
+
+    Args:
+        ingredient_name (str): name of the specific ingredient you want to buy
+        
+        cost (int): integer price of the ingredient to be deducted from the 
+                    balance
+        balance (int): Player’s current coin amount
+        deck (list): collection of ingredients available to the player based on 
+                     tier level
+        max_inventory_size (int): maximum allowed inventory size
+
+    Returns: 
+        balance (int): updated balance after the purchase
+        ingredients (list): updated deck containing the new ingredient
+
+    Side Effects:
+        Confirmation message if the purchase is successful
+        Prints “warning” message if balance is low or inventory is near full
+
+    Raises:
+        ValueError: if cost exceeds the balance, prompting a “Game Over” state
+
+        This function ONLY handles purchasing (coin deduction + adding an 
+        ingredient to the deck).
+        It does NOT handle removing ingredients, merging items, or modifying the
+        deck after a merge.
+    """
+    max_inventory_size = 10
+    # Validate input
+    if cost <= 0:
+        raise ValueError("Invalid cost")
+
+    if not isinstance(ingredient_name, str):
+        raise ValueError("Invalid ingredient name")
+
+    # Check affordability
+    if cost > balance:
+        raise ValueError("Game Over")
+
+    # Check inventory space
+    if len(deck) >= max_inventory_size:
+        print("Inventory full. Cannot purchase.")
+        return balance, deck
+
+    # Check duplicates
+    count = 0
+    for item in deck:
+        if item == ingredient_name:
+            count += 1
+
+    if count >= 3:
+        print(f"You already have many {ingredient_name} items.")
+
+    # Deduct cost
+    balance -= cost
+
+    # Add ingredient
+    deck.append(ingredient_name)
+
+    # Warnings system
+    if balance <= 50:
+        print("Warning: Low balance!")
+
+    if balance <= 100:
+        print("Careful: You are entering low funds range.")
+
+    print(f"Purchased {ingredient_name} successfully.")
+
+    return balance, deck
+# Siddhant Chintaluri
+
 def calculate_merge(usr_input, coins, usr_points):
     """
     Determines if a merge is valid and calculates updated points.
