@@ -53,7 +53,7 @@ def calculate_merge(usr_input, coins, usr_points):
 
 
 #Lilia Burkes
-def update_inventory(completed_recipe_list, current_lvl, ingredients, new_ingredients):
+def update_inventory_items(completed_recipe_list, current_lvl, ingredients, new_ingredients):
     """Levels up the player when they reach a level benchmark, unlocks new 
     ingredients. If a level’s benchmark item/recipe is present in 
     completed_recipe_list, the player moves on to the next level.  
