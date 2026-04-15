@@ -20,6 +20,7 @@ RECIPES = {
     "sundae": ("dessert feast", 4, 10, 0)
 }
 
+
 def calculate_merge(usr_input, coins, usr_points):
     """
     Determines if a merge is valid and calculates updated points and coins.
@@ -49,6 +50,37 @@ def calculate_merge(usr_input, coins, usr_points):
     
     return usr_points, coins, None
 # Ngoc Nguyen
+
+
+#Lilia Burkes
+def update_inventory(completed_recipe_list, current_lvl, ingredients, new_ingredients):
+    """Levels up the player when they reach a level benchmark, unlocks new 
+    ingredients. If a level’s benchmark item/recipe is present in 
+    completed_recipe_list, the player moves on to the next level.  
+
+Args:
+    completed_recipe_list (list): list of all successful merges by the player
+	current_lvl (str): “novice chef”, “advanced chef” “expert chef”
+	ingredients (list): current ingredients available to the player
+	
+Side effects:
+	current_lvl (str) is set to a new level value
+	ingredients (list) is amended with more ingredients depending on new level (from data file)
+    
+    """
+    benchmark = {
+        'advanced chef': 'syrup',
+        'expert chef': 'sundae'
+    }
+
+    for level, recipe in benchmark.items():
+        if recipe in completed_recipe_list:
+            current_lvl = level
+            ingredients.append(new_ingredients)
+
+    return current_lvl, ingredients
+            
+
 
 # Siddhant Chintaluri
 def purchase_ingredient(ingredient_name, cost, balance, deck, level_id):
