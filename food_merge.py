@@ -79,45 +79,31 @@ Side effects:
             ingredients.append(new_ingredients)
 
     return current_lvl, ingredients
-            
 
-
-# Siddhant Chintaluri
-def purchase_ingredient(ingredient_name, cost, balance, deck, level_id):
+#Siddhant Chintaluri         
+def validate_purchase(ingredient_name, cost, balance, deck, level_id, 
+                      max_inventory_size=10):
     """
-    Users begin with a set amount of 500 coins, which will be spent on 
-    ingredients to merge together. No more coins will be given throughout the 
-    game, the goal being to achieve the final item with as few coins spent 
-    (as efficient as possible)
-
+    Validates whether a purchase is legal given the player's current state.
+    Checks affordability, inventory space, level gate, and input correctness.
+    
     Args:
-        ingredient_name (str): name of the specific ingredient you want to buy
-        
-        cost (int): integer price of the ingredient to be deducted from the 
-                    balance
-        balance (int): Player’s current coin amount
-        deck (list): collection of ingredients available to the player based on 
-                     tier level
-        max_inventory_size (int): maximum allowed inventory size
+        ingredient_name (str): name of the ingredient the player wants to buy
+        cost (int): price of the ingredient
+        balance (int): player's current coin amount
+        deck (list): current inventory of ingredients
+        level_id (int): player's current level, used to gate higher-tier 
+                        purchases
+        max_inventory_size (int): maximum allowed inventory size, defaults to 10
 
-    Returns: 
-        balance (int): updated balance after the purchase
-        ingredients (list): updated deck containing the new ingredient
-
-    Side Effects:
-        Confirmation message if the purchase is successful
-        Prints “warning” message if balance is low or inventory is near full
+    Returns:
+        bool: True if the purchase is valid, False otherwise
 
     Raises:
-        ValueError: if cost exceeds the balance, prompting a “Game Over” state
+        ValueError: if cost is zero or negative
+        ValueError: if ingredient_name is not a string
 
-        This function ONLY handles purchasing (coin deduction + adding an 
-        ingredient to the deck).
-        It does NOT handle removing ingredients, merging items, or modifying the
-        deck after a merge.
     """
-    max_inventory_size = 10
-    # Validate input
     if cost <= 0:
         raise ValueError("Invalid cost")
 
@@ -128,43 +114,77 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id):
         _, tier, _, _ = RECIPES[ingredient_name]
         if tier > level_id:
             print(f"You must reach level {tier} to purchase {ingredient_name}.")
-            return balance, deck
+            return False
 
-    # Check affordability
     if cost > balance:
         raise ValueError("Game Over")
 
-    # Check inventory space
     if len(deck) >= max_inventory_size:
         print("Inventory full. Cannot purchase.")
+        return False
+
+    return True
+
+
+def purchase_ingredient(ingredient_name, cost, balance, deck, level_id, 
+                        max_inventory_size=10):
+    """
+    Purchases an ingredient if valid, deducting coins and adding it to the deck.
+    Calls validate_purchase first before making any changes to game state.
+
+    Args:
+        ingredient_name (str): name of the specific ingredient you want to buy
+        cost (int): integer price of the ingredient to be deducted from the 
+                    balance
+        balance (int): player's current coin amount
+        deck (list): collection of ingredients available to the player
+        level_id (int): the player's current level, used to gate higher-tier 
+                        purchases
+        max_inventory_size (int): maximum allowed inventory size, defaults to 10
+
+    Returns:
+        balance (int): updated balance after the purchase
+        deck (list): updated deck containing the new ingredient
+
+    Side Effects:
+        Prints confirmation message if the purchase is successful.
+        Prints warning message if balance is low.
+
+    Raises:
+        ValueError: if cost is zero or negative
+        ValueError: if ingredient_name is not a string
+        ValueError: if cost exceeds balance, triggering a "Game Over" state
+
+    Techniques demonstrated: f-strings containing expressions
+    """
+    if not validate_purchase(ingredient_name, cost, balance, deck, level_id, 
+                             max_inventory_size):
         return balance, deck
 
-    # Check duplicates
     count = 0
     for item in deck:
         if item == ingredient_name:
             count += 1
 
     if count >= 3:
-        print(f"You already have many {ingredient_name} items.")
+        print(
+            f"You already have 3 {ingredient_name} items. Consider merging them."
+            )
 
-    # Deduct cost
     balance -= cost
-
-    # Add ingredient
     deck.append(ingredient_name)
 
-    # Warnings system
     if balance <= 50:
         print("Warning: Low balance!")
-
-    if balance <= 100:
+    elif balance <= 100:
         print("Careful: You are entering low funds range.")
 
-    print(f"Purchased {ingredient_name} successfully.")
+    print(f"Purchased {ingredient_name} successfully. "
+          f"Remaining balance: {balance} coins.")
 
     return balance, deck
 # Siddhant Chintaluri
+
 
 ## John Nguyen ##
 def update_deck(current_deck, ingredient_to_merge, new_product, is_feast=False):
