@@ -20,7 +20,47 @@ RECIPES = {
     "sundae": ("dessert feast", 4, 10, 0)
 }
 
-
+## John Nguyen ##
+class Player:
+    """ 
+    representation of a Player
+    
+    Attributes:
+        deck (list of str): player's current collection of ingredients that they have
+        balance (int): player's current amount of coins
+        points (int): player's current amount of points
+        level (str): player's current level
+        
+    """
+    def __init__(self, name, deck = None, balance = 500, points = 0, level = "Novice Chef"):
+        """initializes a Player's attributes - John Nguyen"""
+        self.name = name
+        self.deck = deck if deck is not None else []
+        self.balance = balance
+        self.points = points
+        self.level = level
+        
+    def __str__(self):
+        """informal representation of Player - John Nguyen"""
+        return (
+                f"{self.name}, "
+                f"{self.deck}, "
+                f"{self.balance}, "
+                f"{self.points}, "
+                f"{self.level} "
+                )
+        
+    def __repr__(self):
+        """string representation of Player - John Nguyen"""
+        return (
+                f"Chef {self.name} Attributes:\n"
+                f"Deck: {self.deck}\n" 
+                f"Balance: {self.balance}\n" 
+                f"Points: {self.points}\n" 
+                f"Level: {self.level}"
+                )
+## John Nguyen ##    
+    
 def calculate_merge(usr_input, coins, usr_points):
     """
     Determines if a merge is valid and calculates updated points and coins.
@@ -191,6 +231,7 @@ def update_deck(current_deck, ingredient_to_merge, new_product, is_feast=False):
     """
     Updates deck after successful merge event by removing used ingredients
     and adding the newly merged product in their place
+    - John Nguyen
     
     Args:
         current_deck (list of str):
