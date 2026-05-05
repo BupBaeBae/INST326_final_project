@@ -117,8 +117,7 @@ class GameManager:
             str: returns chef's level, as a string, that matches with the level 
                 ID number.
         """
-        return self.level_id_map.get(self.player.level, 1)
-    
+        return self.level_id_map.get(self.player.level, 1)  
 # Ngoc Nguyen
 
 ## John Nguyen ##
@@ -301,22 +300,77 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 
     return balance, deck
 # Siddhant Chintaluri
-    
-def main():
-    user_deck = []
-    user_coins = 500
-    user_points = 0
-    level_label = "Novice Chef"
-    level_id = 0
 
-    print("Welcome to the Dessert Feast Efficiency Challenge!")
+# Ngoc Nguyen   
+def main():
+    name = input("Enter your Chef Name: ")
+    p = Player(name)
+    game = GameManager(p)
+    
+    available_to_buy = ["apple", "strawberry"]
+    
+    print(f"\nWelcome {p.name} to the Dessert Feast Efficiency Challenge!")
     print("Goal: Use your 500 coins to create as many Dessert Feasts as possible.")
     
-    # Final summary of game result
-    print("\n--- FINAL RESULTS ---")
-    print(f"Total Points: {user_points}")
-    print(f"Feasts Created: {user_deck.count('dessert feast')}")
-    print(f"Coins Remaining: {user_coins}")
+    try:
+        while game.is_running:
+            print(f"\nStatus: {p}")
+            action = input("\nAction: [B]uy, [M]erge, [Q]uit: ").strip().upper()
+            
+            if action == "B":
+                print(f"Marketplace (Available: {available_to_buy})")
+                item = input("What would you like to buy? ").strip().lower()
+                
+                if item in available_to_buy:
+                    cost = RECIPES[item][3]
+                    p.balance, p.deck = purchase_ingredient(
+                        item, cost, p.balance, p.deck, game.get_level_id()
+                    )
+                else:
+                    print("That item is not available for purchase.")
+            elif action == "M":
+                target = input("Which item to merge? (Type 'feast' for final goal): ").lower()
+                
+                if target == "feast":
+                    if all(x in p.deck for x in ["cake", "pie", "sundae"]):
+                        p.points, p.balance, result = calculate_merge("feast", p.balance, p.points)
+                        p.deck = merge(p.deck, None, result, is_feast=True)
+                        game.completed_recipes.append(result)
+                        print("SUCCESS! You created a Dessert Feast!")
+                    else:
+                        print("Incomplete ingredients! You need a Cake, Pie, and Sundae.")
+                        
+                elif p.deck.count(target) >= 2:
+                    p.points, p.balance, result = calculate_merge(target, p.balance, p.points)
+                    p.deck = merge(p.deck, target, result)
+                    game.completed_recipes.append(result)
+                    print(f"Merge successful! You now have {result}.")
+                    
+                    unlock_ingredients = {"syrup": "banana", "sundae": "blueberry"}
+                    new_item = unlock_ingredients.get(result)
+                    p.level, available_to_buy = update_inventory_items(
+                        game.completed_recipes, p.level, available_to_buy, new_item
+                    )
+                else:
+                    print(f"Not enough {target} items to merge.")
+
+            elif action == "Q":
+                game.is_running = False
+            
+            elif action != "":
+                    print(f"Invalid action: '{action}'. Please use B, M, or Q.")
+        
+    except ValueError as e:
+        print(f"\nGAME OVER: {e}")  
+           
+    print("\n" + "="*30)
+    print("FINAL RESULTS")
+    print(f"Chef: {p.name}")
+    print(f"Total Points: {p.points}")
+    print(f"Feasts Created: {p.deck.count('dessert feast')}")
+    print(f"Coins Remaining: {p.balance}")
+    print("="*30)
 
 if __name__ == "__main__":
     main()
+# Ngoc Nguyen
