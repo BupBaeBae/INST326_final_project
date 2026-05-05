@@ -1,4 +1,6 @@
 import random
+import ultimate_recipe_upgrade as upgrade_path
+
 
 # Ngoc Nguyen
 # Format: "ingredient": ("result", tier, point_value, purchase_cost)
@@ -169,7 +171,7 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
 
     
 #Lilia Burkes
-def update_inventory_items(completed_recipe_list, current_lvl, ingredients, new_ingredients):
+def update_inventory_items(completed_recipe_list, level, upgrade_path):
     """Levels up the player when they reach a level benchmark, unlocks new 
         ingredients. If a level’s benchmark item/recipe is present in 
         completed_recipe_list, the player moves on to the next level.  
@@ -189,12 +191,24 @@ def update_inventory_items(completed_recipe_list, current_lvl, ingredients, new_
         'expert chef': 'sundae'
     }
 
-    for level, recipe in benchmark.items():
-        if recipe in completed_recipe_list:
-            current_lvl = level
-            ingredients.append(new_ingredients)
+    for rank, recipe in benchmark.items():
+       
+### have to have some sort of way to track which recipes are done
 
-    return current_lvl, ingredients
+
+        if recipe in completed_recipe_list:
+           
+            with open(upgrade_path, "r", encoding="utf-8") as f_out:
+               
+                new_recipes = f_out.ultimate_recipes
+               
+                # add new recipes to existing
+                for item, recipe_info in new_recipes:
+                   
+                    RECIPES[item] = recipe_info
+                                   
+
+    return level, RECIPES
 
 #Siddhant Chintaluri         
 def validate_purchase(ingredient_name, cost, balance, deck, level_id, 
