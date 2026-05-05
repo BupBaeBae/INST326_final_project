@@ -172,17 +172,17 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
 #Lilia Burkes
 def update_inventory_items(completed_recipe_list, current_lvl, ingredients, new_ingredients):
     """Levels up the player when they reach a level benchmark, unlocks new 
-    ingredients. If a level’s benchmark item/recipe is present in 
-    completed_recipe_list, the player moves on to the next level.  
+        ingredients. If a level’s benchmark item/recipe is present in 
+        completed_recipe_list, the player moves on to the next level.  
 
-Args:
-    completed_recipe_list (list): list of all successful merges by the player
-	current_lvl (str): “novice chef”, “advanced chef” “expert chef”
-	ingredients (list): current ingredients available to the player
+    Args:
+        completed_recipe_list (list): list of all successful merges by the player
+	    current_lvl (str): “novice chef”, “advanced chef” “expert chef”
+	    ingredients (list): current ingredients available to the player
 	
-Side effects:
-	current_lvl (str) is set to a new level value
-	ingredients (list) is amended with more ingredients depending on new level (from data file)
+    Side effects:
+	    current_lvl (str) is set to a new level value
+	    ingredients (list) is amended with more ingredients depending on new level (from data file)
     
     """
     benchmark = {
