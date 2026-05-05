@@ -227,7 +227,7 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 
 
 ## John Nguyen ##
-def update_deck(current_deck, ingredient_to_merge, new_product, is_feast=False):
+def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
     """
     Updates deck after successful merge event by removing used ingredients
     and adding the newly merged product in their place
