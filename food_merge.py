@@ -19,6 +19,7 @@ RECIPES = {
     "pie": ("dessert feast", 4, 10, 0),
     "sundae": ("dessert feast", 4, 10, 0)
 }
+## Ngoc Nguyen
 
 ## John Nguyen ##
 class Player:
@@ -90,6 +91,34 @@ def calculate_merge(usr_input, coins, usr_points):
         return updated_points, coins, result
     
     return usr_points, coins, None
+
+class GameManager:
+    """
+    Manages the game flow, the player, and tracks overall game progression.
+    """
+    def __init__(self, player):
+        """
+        Initializes the manager with a player and the recipe data.
+
+        Args:
+            player (Player): Player class object.
+        """
+        self.player = player
+        self.is_running = True
+        self.completed_recipes = []
+        # level_id used for validate_purchase logic
+        self.level_id_map = {"Novice Chef": 1, "advanced chef": 2, "expert chef": 3}
+
+    def get_level_id(self):
+        """
+        Gets the chef's level.
+
+        Returns:
+            str: returns chef's level, as a string, that matches with the level 
+                ID number.
+        """
+        return self.level_id_map.get(self.player.level, 1)
+    
 # Ngoc Nguyen
 
 ## John Nguyen ##
