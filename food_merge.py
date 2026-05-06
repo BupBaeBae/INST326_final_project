@@ -1,6 +1,4 @@
 import random
-import ultimate_recipe_upgrade as upgrade_path
-
 
 # Ngoc Nguyen
 # Format: "ingredient": ("result", tier, point_value, purchase_cost)
