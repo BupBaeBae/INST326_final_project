@@ -114,7 +114,7 @@ class GameManager:
         self.is_running = True
         self.completed_recipes = []
         # level_id used for validate_purchase logic
-        self.level_id_map = {"Novice Chef": 1, "advanced chef": 2, "expert chef": 3}
+        self.level_id_map = {"Novice Chef": 1, "Advanced Chef": 2, "Expert Chef": 3}
 
     def get_level_id(self):
         """
@@ -194,8 +194,8 @@ def update_store_items(completed_recipe_list, current_lvl,
     """
 
     benchmark = {
-        'advanced chef': 'juice',
-        'expert chef': 'pudding'
+        'Advanced Chef': 'juice',
+        'Expert Chef': 'pudding'
     }
 
     for level, recipe in benchmark.items():
