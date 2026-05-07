@@ -320,8 +320,17 @@ def main():
     
     available_to_buy = ["apple", "strawberry"]
     
-    print(f"\nWelcome {p.name} to the Dessert Feast Efficiency Challenge!")
-    print("Goal: Use your 500 coins to create as many Dessert Feasts as possible.")
+    print(f"\nWelcome {p.name} to the Dessert Feast Merge Challenge!")
+    print("\n                     HOW TO PLAY\n")
+    print("input 'b' to buy, 'm' to merge, or 'q' to end the game\n")
+    print("You start with 500 coins to buy ingredients, and you don't get any more, so use them wisely!\n")
+    print("To merge, you must have 2 of the same ingredient\n")
+    print("You can merge to the special dessert feast by having the key ingredients\n")
+    print("Level up by merging to certain foods to unlock more foods to buy and merge\n")
+    print("Levels: Novice Chef, Advanced Chef, Expert Chef\n")
+    print("Goal: Use your 500 coins to create as many Dessert Feasts as possible\n")
+    print(f"Good luck {p.name}!\n")
+    print("\n")
     
     try:
         while game.is_running:
