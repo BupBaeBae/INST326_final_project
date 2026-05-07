@@ -79,14 +79,21 @@ def calculate_merge(usr_input, coins, usr_points):
             and only changes after purchasing new ingredient.
         result (str): The name of the higher-tier product created.
     """
+    completed_recipe_list = []
     
     if usr_input == "feast":
+        
+        completed_recipe_list.append("feast")
+        
         # Logic for the final goal (3-item merge)
         return usr_points + 100, coins, "dessert feast"
 
     if usr_input in RECIPES:
         result, tier, pt_val, cost = RECIPES[usr_input]
         updated_points = usr_points + pt_val
+        
+        completed_recipe_list.append(result)
+        
         # Return coins unchanged to ensure merging is free
         return updated_points, coins, result
     
@@ -169,7 +176,8 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
 
     
 #Lilia Burkes
-def update_inventory_items(completed_recipe_list, level, upgrade_path):
+def update_inventory_items(completed_recipe_list, current_lvl,
+                           ingredients, new_ingredients):
     """Levels up the player when they reach a level benchmark, unlocks new 
         ingredients. If a level’s benchmark item/recipe is present in 
         completed_recipe_list, the player moves on to the next level.  
@@ -184,29 +192,19 @@ def update_inventory_items(completed_recipe_list, level, upgrade_path):
 	    ingredients (list) is amended with more ingredients depending on new level (from data file)
     
     """
+
     benchmark = {
-        'advanced chef': 'syrup',
-        'expert chef': 'sundae'
+        'advanced chef': 'juice',
+        'expert chef': 'pudding'
     }
 
-    for rank, recipe in benchmark.items():
-       
-### have to have some sort of way to track which recipes are done
-
-
+    for level, recipe in benchmark.items():
         if recipe in completed_recipe_list:
-           
-            with open(upgrade_path, "r", encoding="utf-8") as f_out:
-               
-                new_recipes = f_out.ultimate_recipes
-               
-                # add new recipes to existing
-                for item, recipe_info in new_recipes:
-                   
-                    RECIPES[item] = recipe_info
-                                   
+            current_lvl = level
+            if new_ingredients is not None and new_ingredients not in ingredients:
+                ingredients.append(new_ingredients)
 
-    return level, RECIPES
+    return current_lvl, ingredients
 
 #Siddhant Chintaluri         
 def validate_purchase(ingredient_name, cost, balance, deck, level_id, 
