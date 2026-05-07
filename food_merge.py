@@ -15,6 +15,7 @@ RECIPES = {
     "tart": ("pie", 3, 3, 0),
     "pudding": ("cake", 3, 3, 0),
     "candy": ("sundae", 3, 3, 0),
+    "fruit bowl": (None, 4, None, 0), #added to RECIPES dict - John
     "cake": ("dessert feast", 4, 10, 0),
     "pie": ("dessert feast", 4, 10, 0),
     "sundae": ("dessert feast", 4, 10, 0)
@@ -44,20 +45,20 @@ class Player:
     def __str__(self):
         """informal representation of Player - John Nguyen"""
         return (
-                f"{self.name}, "
-                f"{self.deck}, "
-                f"{self.balance}, "
-                f"{self.points}, "
+                f"{self.name} \n"
+                f"{self.deck} \n"
+                f"{self.balance} coins, "
+                f"{self.points} points, "
                 f"{self.level} "
                 )
         
     def __repr__(self):
         """string representation of Player - John Nguyen"""
         return (
-                f"Chef {self.name} Attributes:\n"
+                f"Chef {self.name} stats:\n"
                 f"Deck: {self.deck}\n" 
-                f"Balance: {self.balance}\n" 
-                f"Points: {self.points}\n" 
+                f"Coins remaining: {self.balance}\n" 
+                f"Total Points: {self.points}\n" 
                 f"Level: {self.level}"
                 )
 ## John Nguyen ##    
@@ -144,7 +145,7 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
         new_product (str):
             new ingredient added to the deck from a merge event
         is_feast (bool):
-            checks if final goal was reached or not
+            checks if merging for feast
         
     Returns:
         current_deck (list of str): 
@@ -156,14 +157,14 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
         product. Deck size will decrease as two or more ingredients are replaced
         by one merged item
     """
-    # dessert_feasts needs these 3 items merged to be created
-    dessert_feast = ["cake", "pie", "sundae"]
+    # dessert_feast needs specific items to be merged in order to be created
+    dessert_feast = [item for item in RECIPES if RECIPES[item][0] == "dessert feast"]    
     
-    # remove items from the feast
+    # remove items from the feast from current deck
     if is_feast:
         for item in dessert_feast:
             current_deck.remove(item)
-    # remove items in a regular merge
+    # remove items in a regular merge from current deck
     else:
         for i in range(2):
             current_deck.remove(ingredient_to_merge)
@@ -323,7 +324,7 @@ def main():
     # Siddhant
     premium_items = ["juice", "jam", "puree", "syrup"]
     
-    print(f"\nWelcome {p.name} to the Dessert Feast Merge Challenge!")
+    print(f"\nWelcome Chef {p.name} to the Dessert Feast Merge Challenge!")
     print("\n                     HOW TO PLAY\n")
     print("input 'b' to buy, 'm' to merge, or 'q' to end the game\n")
     print("You start with 500 coins to buy ingredients, and you don't get any more, so use them wisely!\n")
@@ -332,12 +333,12 @@ def main():
     print("Level up by merging to certain foods to unlock more foods to buy and merge\n")
     print("Levels: Novice Chef, Advanced Chef, Expert Chef\n")
     print("Goal: Use your 500 coins to create as many Dessert Feasts as possible\n")
-    print(f"Good luck {p.name}!\n")
+    print(f"Good luck Chef {p.name}!\n")
     print("\n")
     
     try:
         while game.is_running:
-            print(f"\nStatus: {p}")
+            print(f"\nSTATUS: \n{p}")
             action = input("\nAction: [B]uy, [M]erge, [Q]uit: ").strip().upper()
             
             if action == "B":
@@ -366,16 +367,19 @@ def main():
                         print("Incomplete ingredients! You need a Cake, Pie, and Sundae.")
                         
                 elif p.deck.count(target) >= 2:
-                    p.points, p.balance, result = calculate_merge(target, p.balance, p.points)
-                    p.deck = merge(p.deck, target, result)
-                    game.completed_recipes.append(result)
-                    print(f"Merge successful! You now have {result}.")
-                    
-                    unlock_ingredients = {"juice": "banana", "pudding": "blueberry"}
-                    new_item = unlock_ingredients.get(result)
-                    p.level, available_to_buy = update_store_items(
-                        game.completed_recipes, p.level, available_to_buy, new_item
-                    )
+                    if RECIPES[target][0] in RECIPES: #added if statement - John
+                        p.points, p.balance, result = calculate_merge(target, p.balance, p.points)
+                        p.deck = merge(p.deck, target, result)
+                        game.completed_recipes.append(result)
+                        print(f"Merge successful! You now have {result}.")
+                        
+                        unlock_ingredients = {"juice": "banana", "pudding": "blueberry"}
+                        new_item = unlock_ingredients.get(result)
+                        p.level, available_to_buy = update_store_items(
+                            game.completed_recipes, p.level, available_to_buy, new_item
+                        )
+                    elif RECIPES[target][0] not in RECIPES: #added if statement to fix None issue in deck - John
+                        print("You can't merge that any further")
                 else:
                     print(f"Not enough {target} items to merge.")
 
@@ -390,10 +394,11 @@ def main():
            
     print("\n" + "="*30)
     print("FINAL RESULTS")
-    print(f"Chef: {p.name}")
-    print(f"Total Points: {p.points}")
+    print(repr(p)) # prints str representation of object - John
+    #print(f"Chef: {p.name}") OLD PRINT STATEMENTS
+    #print(f"Total Points: {p.points}") OLD PRINT STATEMENTS
     print(f"Feasts Created: {p.deck.count('dessert feast')}")
-    print(f"Coins Remaining: {p.balance}")
+    #print(f"Coins Remaining: {p.balance}") OLD PRINT STATEMENTS
     print("="*30)
 
 if __name__ == "__main__":
