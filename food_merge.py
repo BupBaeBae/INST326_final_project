@@ -176,7 +176,7 @@ def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
 
     
 #Lilia Burkes
-def update_inventory_items(completed_recipe_list, current_lvl,
+def update_store_items(completed_recipe_list, current_lvl,
                            ingredients, new_ingredients):
     """Levels up the player when they reach a level benchmark, unlocks new 
         ingredients. If a level’s benchmark item/recipe is present in 
@@ -311,6 +311,7 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
     return balance, deck
 # Siddhant Chintaluri
 
+
 # Ngoc Nguyen   
 def main():
     name = input("Enter your Chef Name: ")
@@ -356,9 +357,9 @@ def main():
                     game.completed_recipes.append(result)
                     print(f"Merge successful! You now have {result}.")
                     
-                    unlock_ingredients = {"syrup": "banana", "sundae": "blueberry"}
+                    unlock_ingredients = {"juice": "banana", "pudding": "blueberry"}
                     new_item = unlock_ingredients.get(result)
-                    p.level, available_to_buy = update_inventory_items(
+                    p.level, available_to_buy = update_store_items(
                         game.completed_recipes, p.level, available_to_buy, new_item
                     )
                 else:
