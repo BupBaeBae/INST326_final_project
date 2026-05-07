@@ -7,10 +7,10 @@ RECIPES = {
     "strawberry": ("jam", 1, 1, 10),
     "banana": ("puree", 1, 1, 15),
     "blueberry": ("syrup", 1, 1, 15),
-    "juice": ("smoothie", 2, 2, 0),
-    "jam": ("tart", 2, 2, 0),
-    "puree": ("pudding", 2, 2, 0),
-    "syrup": ("candy", 2, 2, 0),
+    "juice": ("smoothie", 2, 2, 30),
+    "jam": ("tart", 2, 2, 30),
+    "puree": ("pudding", 2, 2, 50),
+    "syrup": ("candy", 2, 2, 50),
     "smoothie": ("fruit bowl", 3, 3, 0),
     "tart": ("pie", 3, 3, 0),
     "pudding": ("cake", 3, 3, 0),
@@ -320,6 +320,9 @@ def main():
     
     available_to_buy = ["apple", "strawberry"]
     
+    # Siddhant
+    premium_items = ["juice", "jam", "puree", "syrup"]
+    
     print(f"\nWelcome {p.name} to the Dessert Feast Merge Challenge!")
     print("\n                     HOW TO PLAY\n")
     print("input 'b' to buy, 'm' to merge, or 'q' to end the game\n")
@@ -339,6 +342,8 @@ def main():
             
             if action == "B":
                 print(f"Marketplace (Available: {available_to_buy})")
+                #siddhant chintaluri
+                print(f"Premium (Requires Advanced Chef level): {premium_items}")
                 item = input("What would you like to buy? ").strip().lower()
                 
                 if item in available_to_buy:
