@@ -313,8 +313,24 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 # Siddhant Chintaluri
 
 
+### Lilia Burkes ####
+def give_hint():
+    
+    hints = []
+    
+    with open("hints.txt", mode = "r", encoding="utf-8") as hint_pipeline:
+        
+        for hint in hint_pipeline:
+            
+            hints.append(hint)    
+                      
+        return hints
+
+
+
 # Ngoc Nguyen   
 def main():
+    
     name = input("Enter your Chef Name: ")
     p = Player(name)
     game = GameManager(p)
@@ -339,7 +355,7 @@ def main():
     try:
         while game.is_running:
             print(f"\nSTATUS: \n{p}")
-            action = input("\nAction: [B]uy, [M]erge, [Q]uit: ").strip().upper()
+            action = input("\nAction: [B]uy, [M]erge, [H]int, [Q]uit: ").strip().upper()
             
             if action == "B":
                 print(f"Marketplace (Available: {available_to_buy})")
@@ -382,6 +398,16 @@ def main():
                         print("You can't merge that any further")
                 else:
                     print(f"Not enough {target} items to merge.")
+                    
+            elif action == "H":
+                # Lilia Burkes
+                
+                random_index = random.randint(0, 7)
+                
+                hint = give_hint()[random_index] 
+                
+                print(f"Hint: {hint}")
+                
 
             elif action == "Q":
                 game.is_running = False
