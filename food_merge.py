@@ -202,8 +202,16 @@ def update_store_items(completed_recipe_list, current_lvl,
     for level, recipe in benchmark.items():
         if recipe in completed_recipe_list:
             current_lvl = level
-            if new_ingredients is not None and new_ingredients not in ingredients:
-                ingredients.append(new_ingredients)
+        
+            ingredients.append(new_ingredients) if new_ingredients is not None \
+                and new_ingredients not in ingredients else None
+
+
+    # for level, recipe in benchmark.items():
+    #     if recipe in completed_recipe_list:
+    #         current_lvl = level
+    #         if new_ingredients is not None and new_ingredients not in ingredients:
+    #             ingredients.append(new_ingredients)
 
     return current_lvl, ingredients
 
