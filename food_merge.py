@@ -315,7 +315,13 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 
 ### Lilia Burkes ####
 def give_hint():
-    """ Retrieves a list of hints from a bank
+    """ Retrieves a list of hints from a bank stored in a txt file.
+    
+    Returns:
+        hints (list): a list of hints taken from hints.txt
+        
+    Side Effects:
+        opens and reads from hints.txt
     
     """
     
@@ -330,17 +336,25 @@ def give_hint():
         return hints
 
 ### Lilia Burkes ####
-def sell_value(product):
+def sell_value(product, level_id):
     """ Determines the sell price for an item depending on the item's 
-        teir and the player's level
+        tier and the player's level
+    
+    Args:
+        level_id (int): the player's current level, used to gate higher-tier 
+                        purchases
+        product (str): the item the player is attempting to sell   
+        
+    Returns:
+        sell_price (int): the calculated total value of an item     
        
     """
         
     if RECIPES[product][0] and RECIPES[product][1] < 3:
-                    sell_price = round(RECIPES[product][3] * .4)
+                     sell_price = level_id * (round(RECIPES[product][3] * .3))
                     
     elif RECIPES[product][0] and RECIPES[product][1] > 2:
-                    sell_price = RECIPES[product][1] * 10 
+                     sell_price = level_id * (RECIPES[product][1] * 10)
                           
     return sell_price
 
@@ -348,6 +362,23 @@ def sell_value(product):
 ### Lilia Burkes ###
 def sell(balance, deck, sell_price, product):
     """ Determines the players balance and deck after they sell an item.
+    
+    Args:
+        balance (int): player's current coin amount
+        deck (list): collection of ingredients available to the player
+        sell_price (int): the calculated value of a product when sold based 
+                            on player level.
+        product (str): the item the player is attempting to sell        
+
+    Side Effects:
+        balance (int): increases in value based on the sell price of their
+                        product
+        deck (list): sold items are removed from the deck
+        
+    Returns:
+        balance (int): with added sell_price
+        deck (list): missing one item
+        
     
     """
         
@@ -433,13 +464,14 @@ def main():
                 product = input("What do you want to sell?: ").lower()
                 
                 if product in p.deck:
-                    sell_price = sell_value(product)
+                    sell_price = sell_value(product, game.get_level_id())
                     
                     sell_question = input(f"\nSell {product} for {sell_price} coins? [Y]es/[N]o: ").strip().upper()
                     
                     if sell_question == "Y":
                             
-                        p.balance, p.deck = sell(p.balance, p.deck, sell_price, product)
+                        p.balance, p.deck = sell(p.balance, p.deck, \
+                                                    sell_price, product)
                             
                     else:
                         pass
@@ -455,7 +487,7 @@ def main():
                 
                 random_index = random.randint(0, len(hints) - 1)
                 
-                hint = give_hint()[random_index] 
+                hint = hints[random_index] 
                 
                 print(f"Hint: {hint}")
                 
