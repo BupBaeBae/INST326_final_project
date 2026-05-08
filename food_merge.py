@@ -400,9 +400,12 @@ def main():
                     print(f"Not enough {target} items to merge.")
                     
             elif action == "H":
+                
                 # Lilia Burkes
                 
-                random_index = random.randint(0, 7)
+                hints = give_hint()
+                
+                random_index = random.randint(0, len(hints) - 1)
                 
                 hint = give_hint()[random_index] 
                 
