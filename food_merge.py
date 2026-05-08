@@ -315,6 +315,9 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 
 ### Lilia Burkes ####
 def give_hint():
+    """ Retrieves a list of hints from a bank
+    
+    """
     
     hints = []
     
@@ -326,7 +329,33 @@ def give_hint():
                       
         return hints
 
+### Lilia Burkes ####
+def sell_value(product):
+    """ Determines the sell price for an item depending on the item's 
+        teir and the player's level
+       
+    """
+        
+    if RECIPES[product][0] and RECIPES[product][1] < 3:
+                    sell_price = round(RECIPES[product][3] * .4)
+                    
+    elif RECIPES[product][0] and RECIPES[product][1] > 2:
+                    sell_price = RECIPES[product][1] * 10 
+                          
+    return sell_price
 
+
+### Lilia Burkes ###
+def sell(balance, deck, sell_price, product):
+    """ Determines the players balance and deck after they sell an item.
+    
+    """
+        
+    balance += sell_price
+    
+    deck.remove(product) 
+    
+    return balance, deck  
 
 # Ngoc Nguyen   
 def main():
@@ -355,7 +384,7 @@ def main():
     try:
         while game.is_running:
             print(f"\nSTATUS: \n{p}")
-            action = input("\nAction: [B]uy, [M]erge, [H]int, [Q]uit: ").strip().upper()
+            action = input("\nAction: [B]uy, [M]erge, [S]ell, [H]int, [Q]uit: ").strip().upper()
             
             if action == "B":
                 print(f"Marketplace (Available: {available_to_buy})")
@@ -398,6 +427,25 @@ def main():
                         print("You can't merge that any further")
                 else:
                     print(f"Not enough {target} items to merge.")
+                    
+                    
+            elif action == "S":
+                product = input("What do you want to sell?: ").lower()
+                
+                if product in p.deck:
+                    sell_price = sell_value(product)
+                    
+                    sell_question = input(f"\nSell {product} for {sell_price} coins? [Y]es/[N]o: ").strip().upper()
+                    
+                    if sell_question == "Y":
+                            
+                        p.balance, p.deck = sell(p.balance, p.deck, sell_price, product)
+                            
+                    else:
+                        pass
+                    
+                else:
+                    print(f"You don't have any {product}s to sell.")
                     
             elif action == "H":
                 
