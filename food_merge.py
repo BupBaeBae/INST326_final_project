@@ -362,7 +362,7 @@ def sell_value(product, level_id):
                      sell_price = level_id * (round(RECIPES[product][3] * .3))
                     
     elif RECIPES[product][0] and RECIPES[product][1] > 2:
-                     sell_price = level_id * (RECIPES[product][1] * 10)
+                     sell_price = level_id * (RECIPES[product][1] * 3)
                           
     return sell_price
 
