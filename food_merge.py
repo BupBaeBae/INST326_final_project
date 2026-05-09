@@ -105,6 +105,9 @@ def calculate_merge(usr_input, coins, usr_points):
         coins (int): The current amount of coins the player has.
         usr_points (int): The current amount of points the player has.
         
+    Side Effects: 
+        Appends the resulting product name to the completed_recipe_list.
+        
     Returns:
         updated_points (int): The player's updated points after a merge.
         coins (int): The amount of coins left, remains unchanged during a merge.
