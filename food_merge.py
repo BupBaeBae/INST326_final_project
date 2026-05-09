@@ -15,7 +15,7 @@ RECIPES = {
     "tart": ("pie", 3, 3, 0),
     "pudding": ("cake", 3, 3, 0),
     "candy": ("sundae", 3, 3, 0),
-    "fruit bowl": (None, 4, None, 0), #added to RECIPES dict - John
+    "fruit bowl": (None, 4, None, 0), 
     "cake": ("dessert feast", 4, 10, 0),
     "pie": ("dessert feast", 4, 10, 0),
     "sundae": ("dessert feast", 4, 10, 0)
@@ -33,6 +33,8 @@ class Player:
         points (int): player's current amount of points
         level (str): player's current level
         
+    Side Effects:
+        sets attributes of a Player
     """
     def __init__(self, name, deck = None, balance = 500, points = 0, level = "Novice Chef"):
         """initializes a Player's attributes - John Nguyen"""
@@ -62,6 +64,35 @@ class Player:
                 f"Level: {self.level}"
                 )
 ## John Nguyen ##    
+
+# Ngoc Nguyen
+class GameManager:
+    """
+    Manages the game flow, the player, and tracks overall game progression.
+    """
+    def __init__(self, player):
+        """
+        Initializes the manager with a player and the recipe data.
+
+        Args:
+            player (Player): Player class object.
+        """
+        self.player = player
+        self.is_running = True
+        self.completed_recipes = []
+        # level_id used for validate_purchase logic
+        self.level_id_map = {"Novice Chef": 1, "Advanced Chef": 2, "Expert Chef": 3}
+
+    def get_level_id(self):
+        """
+        Gets the chef's level.
+
+        Returns:
+            str: returns chef's level, as a string, that matches with the level 
+                ID number.
+        """
+        return self.level_id_map.get(self.player.level, 1)  
+# Ngoc Nguyen
 
 # Ngoc Nguyen    
 def calculate_merge(usr_input, coins, usr_points):
@@ -99,34 +130,7 @@ def calculate_merge(usr_input, coins, usr_points):
         return updated_points, coins, result
     
     return usr_points, coins, None
-
-class GameManager:
-    """
-    Manages the game flow, the player, and tracks overall game progression.
-    """
-    def __init__(self, player):
-        """
-        Initializes the manager with a player and the recipe data.
-
-        Args:
-            player (Player): Player class object.
-        """
-        self.player = player
-        self.is_running = True
-        self.completed_recipes = []
-        # level_id used for validate_purchase logic
-        self.level_id_map = {"Novice Chef": 1, "Advanced Chef": 2, "Expert Chef": 3}
-
-    def get_level_id(self):
-        """
-        Gets the chef's level.
-
-        Returns:
-            str: returns chef's level, as a string, that matches with the level 
-                ID number.
-        """
-        return self.level_id_map.get(self.player.level, 1)  
-# Ngoc Nguyen
+#Ngoc Nguyen
 
 ## John Nguyen ##
 def merge(current_deck, ingredient_to_merge, new_product, is_feast=False):
@@ -418,7 +422,6 @@ def main():
     print("Levels: Novice Chef, Advanced Chef, Expert Chef\n")
     print("Goal: Use your 500 coins to create as many Dessert Feasts as possible\n")
     print(f"Good luck Chef {p.name}!\n")
-    print("\n")
     
     try:
         while game.is_running:
@@ -451,7 +454,7 @@ def main():
                         print("Incomplete ingredients! You need a Cake, Pie, and Sundae.")
                         
                 elif p.deck.count(target) >= 2:
-                    if RECIPES[target][0] in RECIPES: #added if statement - John
+                    if RECIPES[target][0] in RECIPES:
                         p.points, p.balance, result = calculate_merge(target, p.balance, p.points)
                         p.deck = merge(p.deck, target, result)
                         game.completed_recipes.append(result)
@@ -462,7 +465,7 @@ def main():
                         p.level, available_to_buy = update_store_items(
                             game.completed_recipes, p.level, available_to_buy, new_item
                         )
-                    elif RECIPES[target][0] not in RECIPES: #added if statement to fix None issue in deck - John
+                    elif RECIPES[target][0] not in RECIPES:
                         print("You can't merge that any further")
                 else:
                     print(f"Not enough {target} items to merge.")
@@ -511,11 +514,8 @@ def main():
            
     print("\n" + "="*30)
     print("FINAL RESULTS")
-    print(repr(p)) # prints str representation of object - John
-    #print(f"Chef: {p.name}") OLD PRINT STATEMENTS
-    #print(f"Total Points: {p.points}") OLD PRINT STATEMENTS
+    print(repr(p))
     print(f"Feasts Created: {p.deck.count('dessert feast')}")
-    #print(f"Coins Remaining: {p.balance}") OLD PRINT STATEMENTS
     print("="*30)
 
 if __name__ == "__main__":
