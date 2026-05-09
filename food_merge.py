@@ -331,6 +331,9 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
 def shop_prices(available_items):
     """ shows list of available ingredients and their prices
     
+    Args:
+        available_items (list): list of available ingredients for the user to purchase
+    
     Returns:
         shop (list): list of available ingredients and their prices
     
