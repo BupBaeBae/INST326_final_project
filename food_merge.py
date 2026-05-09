@@ -324,7 +324,19 @@ def purchase_ingredient(ingredient_name, cost, balance, deck, level_id,
     return balance, deck
 # Siddhant Chintaluri
 
-
+## John Nguyen ##
+def shop_prices(available_items):
+    """ shows list of available ingredients and their prices
+    
+    Returns:
+        shop (list): list of available ingredients and their prices
+    
+    """
+    shop = [f"{item} ({RECIPES[item][3]})" for item in available_items]
+        
+    return shop
+## John Nguyen ##
+        
 ### Lilia Burkes ####
 def give_hint():
     """ Retrieves a list of hints from a bank stored in a txt file.
@@ -429,9 +441,9 @@ def main():
             action = input("\nAction: [B]uy, [M]erge, [S]ell, [H]int, [Q]uit: ").strip().upper()
             
             if action == "B":
-                print(f"Marketplace (Available: {available_to_buy})")
+                print(f"Marketplace: {shop_prices(available_to_buy)}")
                 #siddhant chintaluri
-                print(f"Premium (Requires Advanced Chef level): {premium_items}")
+                #print(f"Premium (Requires Advanced Chef level): {premium_items}")
                 item = input("What would you like to buy? ").strip().lower()
                 
                 if item in available_to_buy:
